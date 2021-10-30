@@ -1,0 +1,18 @@
+{
+    "name": "Tasks",
+    "short_name": "Tasks",
+    "lang": "en-US",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "white",
+    "theme_color": "#0ff1ff",
+    "orientation": "natural",
+    "categories": ["utilities", "productivity"],
+    "icons": [
+        {
+            "src": "/img/logo.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
+}
