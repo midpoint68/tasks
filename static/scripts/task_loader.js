@@ -42,11 +42,14 @@ window.addEventListener("load", async () => {
 
     // Setup complete task toggle
     const complete_toggle_btn = document.getElementById("completed-toggle-btn");
-    complete_toggle_btn.addEventListener("click", () => {
-        complete_toggle_btn.classList.toggle("checked");
+    const toggle_completed = (toggle) => {
+        complete_toggle_btn.classList.toggle("checked", toggle);
         const show = complete_toggle_btn.classList.contains("checked");
         task_container.classList.toggle("hide-completed", !show);
-    });
+        localStorage.setItem("show_completed", show ? "true" : "false");
+    };
+    complete_toggle_btn.addEventListener("click", () => { toggle_completed(); });
+    toggle_completed(localStorage.getItem("show_completed") === "true");
 
     // Setup task addition
     const add_task = async (task) => {

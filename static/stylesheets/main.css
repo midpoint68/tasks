@@ -95,7 +95,7 @@ header h1{
     cursor: pointer;
 }
 
-@keyframes complete {
+/* @keyframes complete {
     from {
         opacity: 1;
         max-height: 4em;
@@ -106,15 +106,16 @@ header h1{
         margin: 0;
         padding: 0;
     }
-}
+} */
 
 #tasks.hide-completed .task.completed{
-    animation-play-state: running;
+    display: none;
+    /* animation-play-state: running;
     animation-name: complete;
     animation-duration: 0.25s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    animation-timing-function: ease-out;
+    animation-timing-function: ease-out; */
 }
 
 #completed-toggle{
