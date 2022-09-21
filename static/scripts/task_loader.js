@@ -209,6 +209,14 @@ window.addEventListener("load", async () => {
         }
     }
 
+    // Add clear all button functionality:
+    const clear_btn = document.getElementById("clear-all-btn");
+    clear_btn.addEventListener("click", async () => {
+        tasks = [];
+        await update_tasks();
+        await refresh_tasks();
+    });
+
     // Init page
     await refresh_tasks();
     console.log("Tasks loaded!");

@@ -41,6 +41,18 @@ header h1{
     margin: 0;
 }
 
+button {
+    border: 3px outset #fff;
+    outline: 2px solid #eee;
+    border-radius: 3px;
+    background-color: #eee;
+    cursor: pointer;
+}
+
+button:active {
+    border-style: inset;
+}
+
 .checkbox{
     width: 1.8em;
     height: 1.8em;
@@ -120,7 +132,7 @@ header h1{
     display: none;
 }
 
-#completed-toggle{
+#options{
     font-size: small;
     background-color: var(--shadow-color);
     border-radius: 3px;
@@ -128,8 +140,15 @@ header h1{
     padding: 0.5em;
     display: flex;
     flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#completed-toggle {
+    display: flex;
     justify-content: right;
     align-items: center;
+    flex-wrap: nowrap;
 }
 
 #completed-toggle-btn{
