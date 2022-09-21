@@ -44,21 +44,26 @@ header h1{
 .checkbox{
     width: 1.8em;
     height: 1.8em;
+    overflow: hidden;
     background-image: url("/img/checkbox_empty.png");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: contain;
+    opacity: 0.75;
 }
 
 .checkbox:hover{
     cursor: pointer;
+    opacity: 1;
 }
 
 .checkbox.checked{
+    opacity: 1;
     background-image: url("/img/checkbox_checked.png");
 }
 
 .task{
+    position: relative;
     max-height: 4em;
     margin: 0.5em;
     padding: 0.5em;
@@ -67,6 +72,20 @@ header h1{
     align-items: center;
     box-shadow: 1px 1px 3px var(--shadow-color);
     border-radius: 3px;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.dragging .task::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #0002;
+}
+
+.dragging .task.drag-over::after{
+    background-color: #0000;
+    box-shadow: inset 0 0 2px var(--accent-color);
 }
 
 .task>*{
@@ -78,6 +97,7 @@ header h1{
     padding: 0.5em;
     font-family: inherit;
     flex-grow: 1;
+    border-radius: 3px;
 }
 
 .task input:hover{

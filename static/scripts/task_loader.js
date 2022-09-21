@@ -1,6 +1,6 @@
 window.addEventListener("load", async () => {
 
-    let tasks = { tasks: [] };
+    let tasks = [];
 
     try {
         // Initialize Service Worker
@@ -21,7 +21,7 @@ window.addEventListener("load", async () => {
     const update_tasks = () => {
         return new Promise((resolve, reject) => {
             const data = {
-                tasks: tasks
+                tasks
             };
             const req = new XMLHttpRequest();
             req.open("POST", "/tasks");
@@ -83,6 +83,47 @@ window.addEventListener("load", async () => {
 
         const elem = document.createElement("div");
         elem.classList.add("task");
+        elem.draggable = true;
+        elem.addEventListener("dragstart", (ev) => {
+            ev.dataTransfer.setData("text/plain", "" + index);
+            ev.dataTransfer.dropEffect = "move";
+            task_container.classList.add("dragging");
+        });
+        elem.addEventListener("dragend", ev => {
+            task_container.classList.remove("dragging");
+        });
+        elem.addEventListener("dragover", (ev) => {
+            ev.preventDefault();
+            ev.dataTransfer.dropEffect = "move";
+            elem.classList.add("drag-over");
+        });
+        elem.addEventListener("dragleave", (ev) => {
+            elem.classList.remove("drag-over");
+        });
+        elem.addEventListener("drop", async (ev) => {
+            ev.preventDefault();
+
+            // Get the id of the target and add the moved element to the target's DOM
+            const droppedIndex = parseInt(ev.dataTransfer.getData("text/plain"));
+            if(droppedIndex != index) {
+
+                // Swap indexes and update tasks:
+                console.log(`Moving ${droppedIndex} to ${index}`);
+                const temp = tasks[droppedIndex];
+                if(droppedIndex > index) {
+                    for(let i = droppedIndex; i > index; i--){
+                        tasks[i] = tasks[i - 1];
+                    }
+                } else {
+                    for(let i = droppedIndex; i < index; i++){
+                        tasks[i] = tasks[i + 1];
+                    }
+                }
+                tasks[index] = temp;
+                await update_tasks();
+                await refresh_tasks();
+            }
+        });
         if (task.completed) elem.classList.add("completed");
 
         const checkbox = document.createElement("div");
@@ -95,10 +136,12 @@ window.addEventListener("load", async () => {
             elem.classList.toggle("completed", completed);
             task.completed = completed;
             await update_tasks();
+            await refresh_tasks();
         });
 
         const name = document.createElement("input");
         name.classList.add("name");
+        name.name = "task-name";
         name.type = "text";
         name.placeholder = "Task Name";
         name.value = task.name;
@@ -106,15 +149,19 @@ window.addEventListener("load", async () => {
             // Update name
             task.name = name.value;
             await update_tasks();
+            await refresh_tasks();
         });
 
         const delete_btn = document.createElement("i");
+        delete_btn.title = "Delete";
         delete_btn.classList.add("icofont-bin");
         delete_btn.addEventListener("click", async () => {
             // Delete task
-            tasks.splice(index, 1)
-            await update_tasks();
+            console.log(`deleting task: ${task.name} at index: ${index}`)
+            tasks.splice(index, 1);
             elem.remove();
+            await update_tasks();
+            await refresh_tasks();
         });
 
         // Append to elem
@@ -158,7 +205,7 @@ window.addEventListener("load", async () => {
         // Append task list
         for (let i = 0; i < tasks.length; i++) {
             const task = tasks[i];
-            append_task(task, tasks, i);
+            append_task(task, i);
         }
     }
 
